@@ -2,7 +2,7 @@ name: Activity Boss Leaderboard updater
 
 on:
   schedule:
-  - cron: "*59 8-23 * * 6"
+  - cron: "59 8-23 * * 6"
   - cron: "59 * * * 0,1,2,3"
   - cron: "59 0,1,2 * * 4"
 
