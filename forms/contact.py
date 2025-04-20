@@ -2,7 +2,10 @@ import re
 import requests
 import streamlit as st
 
-WEBHOOKURL = "https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZmMDYzNjA0M2M1MjY4NTUzNDUxM2Ei_pc"
+try:
+    from config_secret import WEBHOOKURL
+except ImportError:
+    WEBHOOKURL = None  # fallback if the file is missing
 
 def contact_form():
     with st.form("contact_form"):
