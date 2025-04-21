@@ -33,7 +33,6 @@ jobs:
         run: python load_boss_elite.py
 
 
-
       - name: Commit files
         run: |
           git checkout main
@@ -45,8 +44,9 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "automatic updater"
+            # Use PAT for pushing
+            git remote set-url origin https://x-access-token:${{secrets.GH_PAT}}@github.com/ducanup01/btd6boss.git
             git push origin main --force
           fi
         env:
-          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-          username: github-actions
+          GH_PAT: ${{secrets.GH_PAT}}
