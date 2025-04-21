@@ -120,6 +120,54 @@ def calculate_how_long_ago(ms, now, date, hour, min):
 
     return format_elapsed_time(how_long_ago)
 
+def stand_by():
+    # Get the current time in UTC
+    now = datetime.now(timezone.utc)
+    
+    # Calculate the number of days until next Saturday
+    days_ahead = (5 - now.weekday()) % 7  # 5 = Saturday (0 = Monday)
+    if days_ahead == 0 and now.hour >= 9:  # If today is Saturday and past 15:00
+        days_ahead = 7
+    
+    # Define the target time: Saturday at 15:00 UTC
+    target_time = now + timedelta(days=days_ahead)
+    target_time = target_time.replace(hour=9, minute=0, second=0, microsecond=0)
+    
+    # Calculate the remaining time
+    remaining_time = target_time - now
+    total_seconds = int(remaining_time.total_seconds())
+    
+    remaining_days, remainder = divmod(total_seconds, 86400)  # 86400 seconds in a day
+    remaining_hours, remainder = divmod(remainder, 3600)
+    remaining_minutes, remaining_seconds = divmod(remainder, 60)
+    
+    # Build the output string dynamically
+    time_parts = []
+    if remaining_days > 1:
+        time_parts.append(f"{remaining_days} days")
+    elif remaining_days == 1:
+        time_parts.append(f"{remaining_days} day")
+    if remaining_hours > 1:
+        time_parts.append(f"{remaining_hours} hours")
+    elif remaining_hours == 1:
+        time_parts.append(f"{remaining_hours} hour")
+    if remaining_minutes > 1:
+        time_parts.append(f"{remaining_minutes} minutes")
+    elif remaining_minutes == 1:
+        time_parts.append(f"{remaining_minutes} minute")
+    
+    time_left = ", ".join(time_parts)
+    
+    # Display in Streamlit
+    name = fetch_boss_name()
+    st.subheader("Ongoing boss:")
+    st.markdown(f"<h2 style='text-align: center; '>{name}</h2>", unsafe_allow_html=True)
+    st.write("\n")
+    st.subheader("Activity leaderboard will be available in:")
+
+    st.markdown(f"<h2 style='text-align: center; '>{time_left}</h2>", unsafe_allow_html=True
+    )
+
 def main():
 
     # Streamlit title
@@ -289,4 +337,12 @@ def main():
         )
     st.write(f"Player count: {len(df[['name']])}")
 
-main()
+def schedule_main():
+    if (current_day == 5 and current_hour >= 8) and (current_day == 5 and current_hour < 9):
+        stand_by()
+        # main()
+    else:
+        main()
+
+
+schedule_main()
