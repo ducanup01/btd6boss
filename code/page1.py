@@ -77,7 +77,7 @@ def expire_date(target_day, target_hour, target_minute):
 
 def delta_to_scum_detector(update):
     if update == 1:
-        return f"❗"
+        return f"❗❗❗"
     else:
         return f""
 
