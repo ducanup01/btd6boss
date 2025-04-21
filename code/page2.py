@@ -117,9 +117,9 @@ def calculate_how_long_ago(ms, now, date, hour, min):
 def main():
 
     # Streamlit title
-    st.title("Elite Boss Activity Leaderboard")
+    st.title("Boss Activity Leaderboard")
     df = pd.read_csv("boss_elite_info.csv")
-    if (current_day == 1 and current_hour >= 3) or (current_day in [2,3]) or (current_day == 4 and current_hour < 8):
+    if (current_day == 3 and current_hour >= 3) or (current_day == 4) or (current_day == 5 and current_hour < 8):
         st.markdown(f"Boss: __**\"{fetch_boss_name()}\"**__ has ended.", unsafe_allow_html=True)
         st.markdown(f"Activity leaderboard expires in **{expire_date(5,8,0)}**")
         df['last_online'] = -1
@@ -132,28 +132,33 @@ def main():
         st.markdown(f"Last update: **{calculate_how_long_ago(0,now,int(last_date),int(last_hour),int(last_min))}** ago")
 
     df['cash_formatted'] = df['cash'].apply(lambda x: f"{x:,}")
+    df['cash_game_time_formatted'] = df['cash_game_time'].apply(lambda ms: f"{ms//3600000}:{(ms//60000)%60:02}:{(ms//1000)%60:02}.{(ms%1000)//10:02}".lstrip("0:").lstrip("0:"))
+
+
     # df['cash_game_time_formatted'] = df['cash_game_time'].apply()
 
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["General statistics ℹ️", "Primary count 🪃", "Military count 🪖", "Magic count 🪄", "Support count 🛖", "Hero count 👑"])
         
     with tab1:
         if df['scoringType'].iloc[0] == 'LeastCash':
+            df = df.sort_values(by='cash', ascending=True)
             st.dataframe(
-                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'cash_formatted', 'cash_game_time', 'last_online_time']],
+                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'cash_formatted', 'cash_game_time_formatted', 'last_online_time']],
                 column_config={
                     'pfp_url': st.column_config.ImageColumn(label="PFP", width=29),  # Profile picture
                     'name': st.column_config.Column(label='Player name 🗨️', width=121, help="Player name"),
                     'monkeys_placed': st.column_config.Column(label='Tower placed 🎮', help="Towers placed since start of boss"),
                     'follower': st.column_config.Column(label='Followers 👥', help="Followers gained"),
                     'cash_formatted': st.column_config.Column(label='PB 💲', help="Cash spent"),
-                    'cash_game_time': st.column_config.Column(label='Last PB 🏁', help="Time since last PB"),
-                    'last_online_time': st.column_config.Column(label='Active', help="Last active")
+                    'cash_game_time_formatted': st.column_config.Column(label='Run length 🏁', help="Time of winning attempt"),
+                    'last_online_time': st.column_config.Column(label='Saves', help="Loaded saves?")
                 },
                 use_container_width=True,
                 hide_index=True,
                 on_select="ignore"
             )
         elif df['scoringType'].iloc[0] == 'GameTime':
+            df = df.sort_values(by='time', ascending=True)
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'time', 'time_game_time', 'last_online_time']],
                 column_config={
@@ -170,6 +175,7 @@ def main():
                 on_select="ignore"
             )
         elif df['scoringType'].iloc[0] == 'LeastTiers':
+            df = df.sort_values(by='tiers', ascending=True)
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'tiers', 'tiers_game_count', 'last_online_time']],
                 column_config={
