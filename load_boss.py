@@ -12,7 +12,7 @@ def check_and_create_boss_info():
         'static', 'update', 'url', 'pfp_url', 'init_game', 'init_monkey', 'init_bloon', 'name',
         'game_count', 'monkeys_placed', 'bloons_popped',
         'time', 'time_game_time', 'tiers', 'tiers_game_time', 'cash', 'cash_game_time',
-        'daily_chest', 'init_follower', 'follower', 'time_ago', 'init_dart', 'init_boomer', 'init_bomb', 'init_tack', 'init_ice', 'init_glue', 'init_sniper', 'init_sub', 'init_boat', 'init_ace', 'init_heli', 'init_mortar', 'init_dartling', 'init_wizard', 'init_super', 'init_ninja', 'init_alch', 'init_druid', 'init_merm', 'init_farm', 'init_spac', 'init_village', 'init_engie', 'init_beast', 'init_brickell', 'init_adora', 'init_benjamin', 'init_churchill', 'init_corvus', 'init_etienne', 'init_ezili', 'init_geraldo', 'init_gwendolin', 'init_obyn', 'init_pat', 'init_psi' ,'init_quincy', 'init_rosalia', 'init_sauda', 'init_jones', 'dart', 'boomer', 'bomb', 'tack', 'ice', 'glue', 'sniper', 'sub', 'boat', 'ace', 'heli', 'mortar', 'dartling', 'wizard', 'super', 'ninja', 'alch', 'druid', 'merm', 'farm', 'spac', 'village', 'engie', 'beast', 'brickell', 'adora', 'benjamin', 'churchill', 'corvus', 'etienne', 'ezili', 'geraldo', 'gwendolin', 'obyn', 'pat', 'psi', 'quincy', 'rosalia', 'sauda', 'jones', 'last_online', 'last_online_time', 'last_update'
+        'daily_chest', 'init_follower', 'follower', 'time_ago', 'init_dart', 'init_boomer', 'init_bomb', 'init_tack', 'init_ice', 'init_glue', 'init_sniper', 'init_sub', 'init_boat', 'init_ace', 'init_heli', 'init_mortar', 'init_dartling', 'init_wizard', 'init_super', 'init_ninja', 'init_alch', 'init_druid', 'init_merm', 'init_farm', 'init_spac', 'init_village', 'init_engie', 'init_beast', 'init_brickell', 'init_adora', 'init_benjamin', 'init_churchill', 'init_corvus', 'init_etienne', 'init_ezili', 'init_geraldo', 'init_gwendolin', 'init_obyn', 'init_pat', 'init_psi' ,'init_quincy', 'init_rosalia', 'init_sauda', 'init_jones', 'dart', 'boomer', 'bomb', 'tack', 'ice', 'glue', 'sniper', 'sub', 'boat', 'ace', 'heli', 'mortar', 'dartling', 'wizard', 'super', 'ninja', 'alch', 'druid', 'merm', 'farm', 'spac', 'village', 'engie', 'beast', 'brickell', 'adora', 'benjamin', 'churchill', 'corvus', 'etienne', 'ezili', 'geraldo', 'gwendolin', 'obyn', 'pat', 'psi', 'quincy', 'rosalia', 'sauda', 'jones', 'last_online', 'last_online_time', 'last_update','scoringType'
     ]
 
     if not os.path.isfile(boss_info):
@@ -139,6 +139,7 @@ def cast_column_types(df):
 
     df['last_online'] = pd.to_numeric(df['last_online'], errors='coerce').fillna(0).astype(int)
     df['last_update'] = pd.to_numeric(df['last_update'], errors='coerce').fillna(0).astype(int)
+    df['scoringType'] = df['scoringType'].astype(str)
 
 def fetch_player_data(url, timeout=5):
     
@@ -391,7 +392,7 @@ def update_new_players(df):
     df.at[0, 'last_update'] = int(now.weekday())
     df.at[1, 'last_update'] = int(now.hour)
     df.at[2, 'last_update'] = int(now.minute)
-    df.at[3, 'last_update'] = scoringType
+    df.at[3, 'scoringType'] = scoringType
 
 def main(boss_info):
 
