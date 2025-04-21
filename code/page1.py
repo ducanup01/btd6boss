@@ -75,6 +75,12 @@ def expire_date(target_day, target_hour, target_minute):
 
     return ", ".join(parts) if parts else ""
 
+def delta_to_scum_detector(update):
+    if update == 1:
+        return f"❗"
+    else:
+        return f""
+
 def calculate_how_long_ago(ms, now, date, hour, min):
     # Reference day (4 = Friday), hour, and minute
     reference_day = date  # Friday
@@ -135,7 +141,7 @@ def main():
     df['cash_formatted'] = df['cash'].apply(lambda x: f"{x:,}")
     df['cash_game_time_formatted'] = df['cash_game_time'].apply(lambda ms: f"{ms//3600000}:{(ms//60000)%60:02}:{(ms//1000)%60:02}.{(ms%1000)//10:02}".lstrip("0:").lstrip("0:"))
 
-    df['save_scum'] = df['update'].apply(lambda x: '❗' if x == 1 else ('' if x == 0 else x))
+    df['save_scum'] = df['update'].apply(lambda x: delta_to_scum_detector(x))
 
 
 
@@ -157,7 +163,7 @@ def main():
                     'follower': st.column_config.Column(label='Followers 👥', help="Followers gained"),
                     'cash_formatted': st.column_config.Column(label='PB 💲', help="Cash spent"),
                     'cash_game_time_formatted': st.column_config.Column(label='Run length 🏁', help="Time of winning attempt"),
-                    'save_scum': st.column_config.Column(label='Saves', help="Loaded saves detecteds")
+                    'save_scum': st.column_config.Column(label='Saves', help="Loaded saves detected")
                 },
                 use_container_width=True,
                 hide_index=True,
