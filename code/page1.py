@@ -131,8 +131,14 @@ def main():
         st.markdown(f"Current boss: __**\"{fetch_boss_name()}\"**__", unsafe_allow_html=True)
         st.markdown(f"Last update: **{calculate_how_long_ago(0,now,int(last_date),int(last_hour),int(last_min))}** ago")
 
+    # config columns
     df['cash_formatted'] = df['cash'].apply(lambda x: f"{x:,}")
     df['cash_game_time_formatted'] = df['cash_game_time'].apply(lambda ms: f"{ms//3600000}:{(ms//60000)%60:02}:{(ms//1000)%60:02}.{(ms%1000)//10:02}".lstrip("0:").lstrip("0:"))
+
+    df['save_scum'] = df['update'].apply(lambda x: '❗' if x == 1 else ('' if x == 0 else x))
+
+
+
 
 
     # df['cash_game_time_formatted'] = df['cash_game_time'].apply()
@@ -143,7 +149,7 @@ def main():
         if df['scoringType'].iloc[0] == 'LeastCash':
             df = df.sort_values(by='cash', ascending=True)
             st.dataframe(
-                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'cash_formatted', 'cash_game_time_formatted', 'last_online_time']],
+                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'cash_formatted', 'cash_game_time_formatted', 'save_scum']],
                 column_config={
                     'pfp_url': st.column_config.ImageColumn(label="PFP", width=29),  # Profile picture
                     'name': st.column_config.Column(label='Player name 🗨️', width=121, help="Player name"),
@@ -151,7 +157,7 @@ def main():
                     'follower': st.column_config.Column(label='Followers 👥', help="Followers gained"),
                     'cash_formatted': st.column_config.Column(label='PB 💲', help="Cash spent"),
                     'cash_game_time_formatted': st.column_config.Column(label='Run length 🏁', help="Time of winning attempt"),
-                    'last_online_time': st.column_config.Column(label='Saves', help="Loaded saves?")
+                    'save_scum': st.column_config.Column(label='Saves', help="Loaded saves detecteds")
                 },
                 use_container_width=True,
                 hide_index=True,
@@ -160,7 +166,7 @@ def main():
         elif df['scoringType'].iloc[0] == 'GameTime':
             df = df.sort_values(by='time', ascending=True)
             st.dataframe(
-                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'time', 'time_game_time', 'last_online_time']],
+                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'time', 'time_game_time', 'save_scum']],
                 column_config={
                     'pfp_url': st.column_config.ImageColumn(label="PFP", width=29),  # Profile picture
                     'name': st.column_config.Column(label='Player name 🗨️', width=121, help="Player name"),
@@ -168,7 +174,7 @@ def main():
                     'follower': st.column_config.Column(label='Followers 👥', help="Followers gained"),
                     'time': st.column_config.Column(label='PB ⏱️', help="Personal best"),
                     'time_game_time': st.column_config.Column(label='Last PB 🏁', help="Time since last PB"),
-                    'last_online_time': st.column_config.Column(label='Active', help="Last active")
+                    'save_scum': st.column_config.Column(label='Saves', help="Loaded saves detected")
                 },
                 use_container_width=True,
                 hide_index=True,
@@ -177,7 +183,7 @@ def main():
         elif df['scoringType'].iloc[0] == 'LeastTiers':
             df = df.sort_values(by='tiers', ascending=True)
             st.dataframe(
-                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'tiers', 'tiers_game_count', 'last_online_time']],
+                df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'tiers', 'tiers_game_count', 'save_scum']],
                 column_config={
                     'pfp_url': st.column_config.ImageColumn(label="PFP", width=29),  # Profile picture
                     'name': st.column_config.Column(label='Player name 🗨️', width=121, help="Player name"),
@@ -185,7 +191,7 @@ def main():
                     'follower': st.column_config.Column(label='Followers 👥', help="Followers gained"),
                     'tiers': st.column_config.Column(label='PB ⏱️', help="Personal best"),
                     'tiers_game_count': st.column_config.Column(label='Last PB 🏁', help="Time since last PB"),
-                    'last_online_time': st.column_config.Column(label='Active', help="Last active")
+                    'save_scum': st.column_config.Column(label='Saves', help="Loaded saves detected")
                 },
                 use_container_width=True,
                 hide_index=True,

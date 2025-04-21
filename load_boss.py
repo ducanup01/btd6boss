@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 boss_info = 'boss_info.csv'
 
-def check_and_create_boss_info():
+def check_and_create_boss_info(): ##update is monkey scum
     columns = [
         'static', 'update', 'url', 'pfp_url', 'init_game', 'init_monkey', 'init_bloon', 'name',
         'game_count', 'monkeys_placed', 'bloons_popped',
@@ -141,6 +141,9 @@ def cast_column_types(df):
     df['last_update'] = pd.to_numeric(df['last_update'], errors='coerce').fillna(0).astype(int)
     df['scoringType'] = df['scoringType'].astype(str)
 
+
+    df['update'] = pd.to_numeric(df['update'], errors='coerce').fillna(0).astype(int)
+
 def fetch_player_data(url, timeout=5):
     
     try:
@@ -253,6 +256,7 @@ def update_new_players(df):
                 'init_monkey': monkey,
                 'init_bloon': bloon,
                 'init_follower': init_follower,
+                'update': int(0),
 
                 'init_dart': dart,
                 'init_boomer': boomer,
@@ -328,7 +332,14 @@ def update_new_players(df):
             df.at[row_index, 'name'] = player_data.get('body', {}).get('displayName', None)
             df.at[row_index, 'game_count'] = game
 
-            df.at[row_index, 'monkeys_placed'] = player_data.get('body', {}).get('gameplay', {}).get('monkeysPlaced', 0) - df.at[row_index, 'init_monkey']
+            # insert scum here
+
+            monkeys_before = df.at[row_index, 'monkeys_placed']
+            monkeys_after = player_data.get('body', {}).get('gameplay', {}).get('monkeysPlaced', 0) - df.at[row_index, 'init_monkey']
+            df.at[row_index, 'monkeys_placed'] = monkeys_after
+            if monkeys_after - monkeys_before < 0:
+                df.at[row_index, 'update'] = 1
+            
 
             df.at[row_index, 'bloons_popped'] = player_data.get('body', {}).get('bloonsPopped', {}).get('bloonsPopped', 0) - df.at[row_index, 'init_bloon']
 
