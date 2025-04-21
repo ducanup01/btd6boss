@@ -392,7 +392,7 @@ def update_new_players(df):
     df.at[0, 'last_update'] = int(now.weekday())
     df.at[1, 'last_update'] = int(now.hour)
     df.at[2, 'last_update'] = int(now.minute)
-    df.at[3, 'scoringType'] = scoringType
+    df.at[0, 'scoringType'] = scoringType
 
 def main(boss_info):
 
