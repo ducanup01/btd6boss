@@ -38,6 +38,7 @@ jobs:
           git config --local user.name ducanup01
           git config --local user.email "ducanup01@gmail.com"
           git add boss_info.csv
+          git add boss_elite_info.csv
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
