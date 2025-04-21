@@ -17,6 +17,11 @@ with streamlit_analytics.track(unsafe_password="ducanup01"):
         icon=":material/leaderboard:",
         default=True,
     )
+    page_2 = st.Page(
+        page="code/page2.py",
+        title="Elite Boss Activity Leaderboard",
+        icon=":material/leaderboard:"
+    )
     page_5 = st.Page(
         page="code/page5.py",
         title="About",
@@ -25,7 +30,7 @@ with streamlit_analytics.track(unsafe_password="ducanup01"):
     pg = st.navigation(
         {
         "Home ": [home_page],
-        "Menu ": [page_1],
+        "Menu ": [page_1, page_2],
         "Index ": [page_5],
         }
     )
