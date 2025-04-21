@@ -144,6 +144,15 @@ def cast_column_types(df):
 
     df['update'] = pd.to_numeric(df['update'], errors='coerce').fillna(0).astype(int)
 
+
+def clear_race_info(boss_info):
+    check_and_create_boss_info()
+    df = pd.read_csv(boss_info)
+    print("Clearing data...")
+    df = df.iloc[:0]
+    df.to_csv(boss_info, index=False)
+    print("Data cleared!")
+
 def fetch_player_data(url, timeout=5):
     
     try:
@@ -423,3 +432,25 @@ def main(boss_info):
     print("Boss information updated!")
     
 main(boss_info)
+
+def schedule_main(boss_info):
+    now = datetime.now(timezone.utc)  # Current time in GMT
+    current_min = now.minute
+    current_hour = now.hour
+    current_day = now.weekday()  # Monday = 0, Sunday = 6
+
+    if current_day == 5 and current_hour == 7 and current_min < 45:
+        clear_race_info(boss_info)
+    elif current_day == 5 and current_hour >= 8:
+        main(boss_info)
+    elif current_day == 1 or current_day == 6 or current_day == 0 or current_day == 2:
+        main(boss_info)
+    elif current_day == 3 and current_hour <= 2:
+        main(boss_info)
+    elif current_day == 3 and current_hour == 3 and current_min <= 15:
+        main(boss_info)
+    else:
+        print("Taking a break...")
+
+if __name__ == "__main__":
+    schedule_main(boss_info)
