@@ -137,7 +137,7 @@ def main():
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["General statistics ℹ️", "Primary count 🪃", "Military count 🪖", "Magic count 🪄", "Support count 🛖", "Hero count 👑"])
         
     with tab1:
-        if df['last_update'].iloc[0] == 'LeastCash':
+        if df['scoringType'].iloc[0] == 'LeastCash':
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'cash_formatted', 'cash_game_time', 'last_online_time']],
                 column_config={
@@ -153,7 +153,7 @@ def main():
                 hide_index=True,
                 on_select="ignore"
             )
-        elif df['last_update'].iloc[0] == 'GameTime':
+        elif df['scoringType'].iloc[0] == 'GameTime':
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'time', 'time_game_time', 'last_online_time']],
                 column_config={
@@ -169,7 +169,7 @@ def main():
                 hide_index=True,
                 on_select="ignore"
             )
-        elif df['last_update'].iloc[0] == 'LeastTiers':
+        elif df['scoringType'].iloc[0] == 'LeastTiers':
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'tiers', 'tiers_game_count', 'last_online_time']],
                 column_config={
