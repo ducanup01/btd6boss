@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime, timezone
 
 
-boss_info = 'boss_info.csv'
+boss_info = 'boss_elite_info.csv'
 
 def check_and_create_boss_info():
     columns = [
@@ -24,8 +24,8 @@ def check_and_create_boss_info():
 def fetch_latest_leaderboard_data():
     bosses = requests.get("https://data.ninjakiwi.com/btd6/bosses")
     for i in range(8):
-        if bosses.json()['body'][i]['totalScores_standard'] > 1:
-            leaderboard_url = bosses.json()['body'][i]['leaderboard_standard_players_1']
+        if bosses.json()['body'][i]['totalScores_elite'] > 1:
+            leaderboard_url = bosses.json()['body'][i]['leaderboard_elite_players_1']
             scoringType = bosses.json()['body'][i]['scoringType']
             latest_leaderboard_data = requests.get(leaderboard_url).json()
             return latest_leaderboard_data, scoringType

@@ -28,6 +28,7 @@ jobs:
 
       - name: Execute Python script
         run: python load_boss.py
+        run: python load_boss_elite.py
 
 
 
