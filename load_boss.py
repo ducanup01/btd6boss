@@ -341,16 +341,15 @@ def update_new_players(df):
             df.at[row_index, 'name'] = player_data.get('body', {}).get('displayName', None)
             df.at[row_index, 'game_count'] = game
 
-            # insert scum here
-
-            monkeys_before = df.at[row_index, 'monkeys_placed']
-            monkeys_after = player_data.get('body', {}).get('gameplay', {}).get('monkeysPlaced', 0) - df.at[row_index, 'init_monkey']
-            df.at[row_index, 'monkeys_placed'] = monkeys_after
-            if monkeys_after - monkeys_before < 0:
-                df.at[row_index, 'update'] = 1
+            df.at[row_index, 'monkeys_placed'] = player_data.get('body', {}).get('gameplay', {}).get('monkeysPlaced', 0) - df.at[row_index, 'init_monkey']
             
+            # insert scum detector here
 
-            df.at[row_index, 'bloons_popped'] = player_data.get('body', {}).get('bloonsPopped', {}).get('bloonsPopped', 0) - df.at[row_index, 'init_bloon']
+            bloons_before = df.at[row_index, 'bloons_popped']
+            bloons_after = player_data.get('body', {}).get('bloonsPopped', {}).get('bloonsPopped', 0) - df.at[row_index, 'init_bloon']
+            df.at[row_index, 'bloons_popped'] = bloons_after
+            if bloons_after - bloons_before < 0:
+                df.at[row_index, 'update'] = 1
 
             df.at[row_index, 'follower'] = follower - df.at[row_index, 'init_follower']
 

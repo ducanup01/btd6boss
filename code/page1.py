@@ -202,6 +202,7 @@ def main():
     with tab1:
         if df['scoringType'].iloc[0] == 'LeastCash':
             df = df.sort_values(by='cash', ascending=True)
+            df = df.head(25)
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'cash_formatted', 'cash_game_time_formatted', 'save_scum']],
                 column_config={
@@ -219,6 +220,7 @@ def main():
             )
         elif df['scoringType'].iloc[0] == 'GameTime':
             df = df.sort_values(by='time', ascending=True)
+            df = df.head(25)
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'time', 'time_game_time', 'save_scum']],
                 column_config={
@@ -236,6 +238,7 @@ def main():
             )
         elif df['scoringType'].iloc[0] == 'LeastTiers':
             df = df.sort_values(by='tiers', ascending=True)
+            df = df.head(25)
             st.dataframe(
                 df[['pfp_url', 'name', 'monkeys_placed', 'follower', 'tiers', 'tiers_game_count', 'save_scum']],
                 column_config={
