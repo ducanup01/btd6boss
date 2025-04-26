@@ -429,8 +429,6 @@ def main(boss_info):
 
     df.to_csv(boss_info, index=False)
     print("Boss information updated!")
-    
-main(boss_info)
 
 def schedule_main(boss_info):
     now = datetime.now(timezone.utc)  # Current time in GMT
@@ -438,7 +436,7 @@ def schedule_main(boss_info):
     current_hour = now.hour
     current_day = now.weekday()  # Monday = 0, Sunday = 6
 
-    if current_day == 5 and current_hour == 7 and current_min < 45:
+    if current_day == 5 and current_hour == 7 and current_min < 59:
         clear_race_info(boss_info)
     elif current_day == 5 and current_hour >= 8:
         main(boss_info)
